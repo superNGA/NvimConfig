@@ -8,9 +8,14 @@ vim.opt.shiftwidth     = 4
 vim.opt.tabstop        = 4
 vim.opt.softtabstop    = 4
 vim.opt.number         = true
-vim.opt.relativenumber = true
+vim.opt.relativenumber = false
 vim.opt.clipboard      = "unnamedplus"
 
+
+-- quick navigation keybinds
+vim.keymap.set('n', '<Space>', '<Nop>')
+vim.keymap.set('n', '<C-j>', '10j', { desc = "Go down 10 lines" })
+vim.keymap.set('n', '<C-k>', '10k', { desc = "Go up 10 lines"   })
 
 
 -- quickly removing highlighting
@@ -65,7 +70,8 @@ local plugins = {
     { "folke/which-key.nvim", event = "VeryLazy" },
     { 'nvimdev/dashboard-nvim', event = 'VimEnter', dependencies = { 'nvim-tree/nvim-web-devicons' }},
     { "windwp/nvim-autopairs", event = "InsertEnter" },
-    { "sphamba/smear-cursor.nvim" }
+    { "sphamba/smear-cursor.nvim" },
+    { "akinsho/bufferline.nvim", dependencies = { "nvim-tree/nvim-web-devicons" } }
 }
 local opt = {}
 require("lazy").setup(plugins, opt)
@@ -104,6 +110,13 @@ require("catppuccin").setup({flavour = "mocha"})
 vim.cmd.colorscheme("rose-pine")
 
 
+-- bufferline
+vim.opt.termguicolors = true
+require("bufferline").setup{}
+vim.keymap.set('n', '<Tab>',   "<Cmd>b#<CR>",    { desc = "Go to last buffer" })
+vim.keymap.set('n', '<S-Tab>', "<Cmd>bnext<CR>", { desc = "Go to next buffer" })
+
+
 -- Telescope
 local builtin = require('telescope.builtin')
 vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = 'Telescope find files' })
@@ -121,6 +134,39 @@ vim.keymap.set('n', '<leader>dd', function() require("telescope.builtin").diagno
 
 
 -- luaSnip
+local ls = require("luasnip")
+local s = ls.snippet
+local t = ls.text_node
+local f = ls.function_node
+local i = ls.insert_node
+ls.add_snippets("all",{
+    s("wall", {
+        t({
+            "///////////////////////////////////////////////////////////////////////////",
+            "///////////////////////////////////////////////////////////////////////////",
+        })
+    }),
+    s("wallasm", {
+        t({
+            ";//////////////////////////////////////////////////////////////////////////",
+            ";//////////////////////////////////////////////////////////////////////////",
+        })
+    }),
+    s("dochdr", {
+    t("//========================================================================="),
+    t({"", "//                      "}),
+    i(1, "Title"),
+    t({"", "//========================================================================="}),
+    t({"", "// by      : INSANE"}),
+    t({"", "// created : "}),
+    f(function() return os.date("%d/%m/%Y") end), -- Date
+    t({"", "//", "// purpose : "}),
+    i(2, "Purpose"),
+    t({"", "//-------------------------------------------------------------------------"}),
+    t({""}),
+    i(0),
+  }),
+})
 require("luasnip.loaders.from_vscode").lazy_load()
 
 
@@ -139,6 +185,7 @@ require("smear_cursor").setup({
     enabled = true, smear_between_buffers = true, stiffness = 0.7, trailing_stiffness = 0.45, distance_stop_animating = 0.3, trailing_exponent = 5,
     cursor_color = "#ffffff", cursor_color_insert_mode = "#ffffff", normal_bg = "#ffffff", transparent_bg_fallback_color = "#ffffff",
     legacy_computing_symbols_support = false, hide_target_hack = true, never_draw_over_target = true,
+    smear_diagonally = true, smear_horizontally = true, smear_vertically = true
 })
 
 
@@ -161,7 +208,8 @@ vim.lsp.config("*", {
     capabilities = require('cmp_nvim_lsp').default_capabilities(),
 })
 vim.lsp.config("clangd", {
-    init_options = {fallbackFlags = { '-std=c++17' }}
+    -- init_options = {fallbackFlags = { '-std=c++17' }}
+    init_options = {fallbackFlags = { '-std=c++20' }} -- std::format is fine with C++ 17 on msvc but not anywhere else, so we use c++ 20, but I really don't want to :( I like 17
 })
 
 
@@ -177,7 +225,7 @@ vim.diagnostic.config({
 
 -- nvim-cmp
 local cmp = require("cmp")
-
+local luasnip = require("luasnip")
 cmp.setup({
     snippet = {
         -- REQUIRED - you must specify a snippet engine
@@ -194,8 +242,23 @@ cmp.setup({
         ['<C-f>']     = cmp.mapping.scroll_docs(4),
         ['<C-Space>'] = cmp.mapping.complete(),
         ['<C-e>']     = cmp.mapping.abort(),
-        -- ['<CR>']      = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-        ['<Tab>']      = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+        ['<Tab>']     = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+
+        -- Jumping between placeholders
+        ['<C-l>'] = cmp.mapping(function(fallback)
+            if luasnip.jumpable(1) then
+                luasnip.jump(1)
+            else
+                fallback()
+            end
+        end, {'i', 's'}),
+        ['<C-h>'] = cmp.mapping(function(fallback)
+            if luasnip.jumpable(-1) then
+                luasnip.jump(-1)
+            else
+                fallback()
+            end
+        end, {'i', 's'})
     }),
     sources = cmp.config.sources({
         { name = 'nvim_lsp' },
@@ -209,10 +272,12 @@ cmp.setup({
 })
 
 
-vim.keymap.set('n', 'K',     vim.lsp.buf.hover,          { desc = "Show Hover Info"     })
+-- Gotta delete H's keybind before setting it to Hover info
+-- vim.keymap.del('n', 'H')
+vim.keymap.set('n', 'H',     vim.lsp.buf.hover,          { desc = "Show Hover Info"     })
 vim.keymap.set('n', 'gd',    vim.lsp.buf.definition,     { desc = "Go To Definition"    })
 vim.keymap.set('n', 'gD',    vim.lsp.buf.declaration,    { desc = "Go To Declaration"   })
-vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, { desc = "Show Signature Help" })
+vim.keymap.set('n', '<C-h>', vim.lsp.buf.signature_help, { desc = "Show Signature Help" })
 vim.keymap.set({'n', 'v'}, '<leader>ca', vim.lsp.buf.code_action, { desc = "Code Action" })
 
 
