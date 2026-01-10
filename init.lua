@@ -44,8 +44,9 @@ vim.opt.rtp:prepend(lazypath)
 
 -- plugins...
 local plugins = {
-    { "catppuccin/nvim",  name = "catppuccin", priority = 1000 },
-    { "rose-pine/neovim", name = "rose-pine",  priority = 1000 },
+    { "catppuccin/nvim",           name = "catppuccin", priority = 1000 },
+    { "rose-pine/neovim",          name = "rose-pine",  priority = 1000 },
+    { "navarasu/onedark.nvim", priority = 1000 },
     {
         'nvim-telescope/telescope.nvim',
         dependencies = {
@@ -71,7 +72,8 @@ local plugins = {
     { 'nvimdev/dashboard-nvim', event = 'VimEnter', dependencies = { 'nvim-tree/nvim-web-devicons' }},
     { "windwp/nvim-autopairs", event = "InsertEnter" },
     { "sphamba/smear-cursor.nvim" },
-    { "akinsho/bufferline.nvim", dependencies = { "nvim-tree/nvim-web-devicons" } }
+    { "akinsho/bufferline.nvim", dependencies = { "nvim-tree/nvim-web-devicons" } },
+    { "smjonas/inc-rename.nvim" }
 }
 local opt = {}
 require("lazy").setup(plugins, opt)
@@ -106,8 +108,8 @@ require('dashboard').setup({
 
 
 -- Color scheme.
-require("catppuccin").setup({flavour = "mocha"})
-vim.cmd.colorscheme("rose-pine")
+require("onedark").setup({style = "warmer"})
+vim.cmd.colorscheme("onedark")
 
 
 -- bufferline
@@ -177,6 +179,11 @@ vim.opt.foldenable = false
 
 -- nvim Auto-pair
 require('nvim-autopairs').setup()
+
+
+-- inc-rename
+require("inc_rename").setup();
+vim.keymap.set("n", "<leader>rn", function() return ":IncRename " .. vim.fn.expand("<cword>") end, { expr = true }, { desc = "Rename symbols under cursor" })
 
 
 -- Smear cursor
