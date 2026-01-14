@@ -14,8 +14,8 @@ vim.opt.clipboard      = "unnamedplus"
 
 -- quick navigation keybinds
 vim.keymap.set('n', '<Space>', '<Nop>')
-vim.keymap.set('n', '<C-j>', '10j', { desc = "Go down 10 lines" })
-vim.keymap.set('n', '<C-k>', '10k', { desc = "Go up 10 lines"   })
+vim.keymap.set({'n', 'v'}, '<C-j>', '10j', { desc = "Go down 10 lines" })
+vim.keymap.set({'n', 'v'}, '<C-k>', '10k', { desc = "Go up 10 lines"   })
 
 
 -- quickly removing highlighting
@@ -197,7 +197,7 @@ require("smear_cursor").setup({
 
 
 -- neo-tree
-require("oil").setup()
+require("oil").setup({view_options = {show_hidden = true}})
 vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
 
 
@@ -215,8 +215,13 @@ vim.lsp.config("*", {
     capabilities = require('cmp_nvim_lsp').default_capabilities(),
 })
 vim.lsp.config("clangd", {
-    -- init_options = {fallbackFlags = { '-std=c++17' }}
-    init_options = {fallbackFlags = { '-std=c++20' }} -- std::format is fine with C++ 17 on msvc but not anywhere else, so we use c++ 20, but I really don't want to :( I like 17
+    -- std::format is fine with C++ 17 on msvc but not anywhere else, so we use c++ 20, but I really don't want to :( I like 17
+    init_options = {fallbackFlags = { '-std=c++20' }},
+
+    cmd = {
+        "clangd",
+        "--header-insertion=never"
+    }
 })
 
 
