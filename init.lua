@@ -14,8 +14,10 @@ vim.opt.clipboard      = "unnamedplus"
 
 -- quick navigation keybinds
 vim.keymap.set('n', '<Space>', '<Nop>')
-vim.keymap.set({'n', 'v'}, '<C-j>', '10j', { desc = "Go down 10 lines" })
-vim.keymap.set({'n', 'v'}, '<C-k>', '10k', { desc = "Go up 10 lines"   })
+vim.keymap.set({'n', 'v'}, '<C-j>', '10j',   { desc = "Go down 10 lines" })
+vim.keymap.set({'n', 'v'}, '<C-k>', '10k',   { desc = "Go up 10 lines"   })
+vim.keymap.set({'n', 'v'}, '<A-j>', '10<C-e>', { remap = true, silent = true, desc = "Scroll down 10 lines." })
+vim.keymap.set({'n', 'v'}, '<A-k>', '10<C-y>', { remap = true, silent = true, desc = "Scroll up 10 lines."   })
 
 
 -- quickly removing highlighting
