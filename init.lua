@@ -75,7 +75,8 @@ local plugins = {
     { "windwp/nvim-autopairs", event = "InsertEnter" },
     { "sphamba/smear-cursor.nvim" },
     { "akinsho/bufferline.nvim", dependencies = { "nvim-tree/nvim-web-devicons" } },
-    { "smjonas/inc-rename.nvim" }
+    { "smjonas/inc-rename.nvim" },
+    { "mg979/vim-visual-multi" }
 }
 local opt = {}
 require("lazy").setup(plugins, opt)
