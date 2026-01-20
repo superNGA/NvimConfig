@@ -49,6 +49,9 @@ local plugins = {
     { "catppuccin/nvim",           name = "catppuccin", priority = 1000 },
     { "rose-pine/neovim",          name = "rose-pine",  priority = 1000 },
     { "navarasu/onedark.nvim", priority = 1000 },
+    { "nyoom-engineering/oxocarbon.nvim", priority = 1000 },
+    { "aktersnurra/no-clown-fiesta.nvim", priority = 1000 },
+    { "EdenEast/nightfox.nvim", priority = 1000 },
     {
         'nvim-telescope/telescope.nvim',
         dependencies = {
