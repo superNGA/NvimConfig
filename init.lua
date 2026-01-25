@@ -79,7 +79,9 @@ local plugins = {
     { "sphamba/smear-cursor.nvim" },
     { "akinsho/bufferline.nvim", dependencies = { "nvim-tree/nvim-web-devicons" } },
     { "smjonas/inc-rename.nvim" },
-    { "mg979/vim-visual-multi" }
+    { "mg979/vim-visual-multi" },
+    { "typicode/bg.nvim", lazy = false },
+    { "catgoose/nvim-colorizer.lua", event = "BufReadPre" }
 }
 local opt = {}
 require("lazy").setup(plugins, opt)
@@ -301,3 +303,7 @@ vim.keymap.set({'n', 'v'}, '<leader>ca', vim.lsp.buf.code_action, { desc = "Code
 
 -- lualine
 require("lualine").setup()
+
+
+-- catgoose/nvim-colorize.nvim
+require("colorizer").setup()
