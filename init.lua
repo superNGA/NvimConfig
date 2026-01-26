@@ -80,8 +80,8 @@ local plugins = {
     { "akinsho/bufferline.nvim", dependencies = { "nvim-tree/nvim-web-devicons" } },
     { "smjonas/inc-rename.nvim" },
     { "mg979/vim-visual-multi" },
-    { "typicode/bg.nvim", lazy = false },
-    { "catgoose/nvim-colorizer.lua", event = "BufReadPre" }
+    -- { "typicode/bg.nvim", lazy = false },
+    -- { "catgoose/nvim-colorizer.lua", event = "BufReadPre" }
 }
 local opt = {}
 require("lazy").setup(plugins, opt)
@@ -306,4 +306,4 @@ require("lualine").setup()
 
 
 -- catgoose/nvim-colorize.nvim
-require("colorizer").setup()
+-- require("colorizer").setup()
