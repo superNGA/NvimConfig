@@ -1,7 +1,5 @@
 vim.g.mapleader        = " "
 vim.g.maplocalleader   = " "
-
-
 vim.opt.expandtab      = true
 vim.opt.shiftround     = true
 vim.opt.shiftwidth     = 4
@@ -19,11 +17,13 @@ vim.keymap.set({'n', 'v'}, '<C-k>', '10k',   { desc = "Go up 10 lines"   })
 vim.keymap.set({'n', 'v'}, '<A-j>', '10<C-e>', { remap = true, silent = true, desc = "Scroll down 10 lines." })
 vim.keymap.set({'n', 'v'}, '<A-k>', '10<C-y>', { remap = true, silent = true, desc = "Scroll up 10 lines."   })
 
+vim.keymap.set('i', '<C-BS>', '<C-W>', { noremap = true, silent = true })
+
 
 -- quickly removing highlighting
 vim.keymap.set('n', "<Esc>",     "<CMD>noh<CR>")
-vim.keymap.set('n', "<leader>/", "gcc", { remap = true, desc = "Toggle comment"});
-vim.keymap.set('v', "<leader>/", "gc",  { remap = true, desc = "Toggle comment"});
+vim.keymap.set('n', "<leader>/", "gcc", { remap = true, desc = "Toggle comment"})
+vim.keymap.set('v', "<leader>/", "gc",  { remap = true, desc = "Toggle comment"})
 
 
 -- Bootstrap lazy.nvim
@@ -52,6 +52,9 @@ local plugins = {
     { "nyoom-engineering/oxocarbon.nvim", priority = 1000 },
     { "aktersnurra/no-clown-fiesta.nvim", priority = 1000 },
     { "EdenEast/nightfox.nvim", priority = 1000 },
+    { "ellisonleao/gruvbox.nvim", priority = 1000},
+    { "webhooked/kanso.nvim", lazy = false, priority = 1000, },
+    { "vague-theme/vague.nvim", lazy = false, priority = 1000, },
     {
         'nvim-telescope/telescope.nvim',
         dependencies = {
@@ -80,6 +83,7 @@ local plugins = {
     { "akinsho/bufferline.nvim", dependencies = { "nvim-tree/nvim-web-devicons" } },
     { "smjonas/inc-rename.nvim" },
     { "mg979/vim-visual-multi" },
+    { "abecodes/tabout.nvim", lazy = false }
     -- { "typicode/bg.nvim", lazy = false },
     -- { "catgoose/nvim-colorizer.lua", event = "BufReadPre" }
 }
@@ -118,6 +122,10 @@ require('dashboard').setup({
 -- Color scheme.
 require("onedark").setup({style = "warmer"})
 vim.cmd.colorscheme("onedark")
+
+
+-- Tabout
+require('tabout').setup()
 
 
 -- bufferline
@@ -195,13 +203,14 @@ vim.keymap.set("n", "<leader>rn", function() return ":IncRename " .. vim.fn.expa
 
 
 -- Smear cursor
-require("smear_cursor").setup({
-    time_interval = 7, -- "FPS"
-    enabled = true, smear_between_buffers = true, stiffness = 0.7, trailing_stiffness = 0.45, distance_stop_animating = 0.3, trailing_exponent = 5,
-    cursor_color = "#ffffff", cursor_color_insert_mode = "#ffffff", normal_bg = "#ffffff", transparent_bg_fallback_color = "#ffffff",
-    legacy_computing_symbols_support = false, hide_target_hack = true, never_draw_over_target = true,
-    smear_diagonally = true, smear_horizontally = true, smear_vertically = true
-})
+-- Not required with neovide.
+-- require("smear_cursor").setup({
+--     time_interval = 7, -- "FPS"
+--     enabled = true, smear_between_buffers = true, stiffness = 0.7, trailing_stiffness = 0.45, distance_stop_animating = 0.3, trailing_exponent = 5,
+--     cursor_color = "#ffffff", cursor_color_insert_mode = "#ffffff", normal_bg = "#ffffff", transparent_bg_fallback_color = "#ffffff",
+--     legacy_computing_symbols_support = false, hide_target_hack = true, never_draw_over_target = true,
+--     smear_diagonally = true, smear_horizontally = true, smear_vertically = true
+-- })
 
 
 -- neo-tree
@@ -303,7 +312,3 @@ vim.keymap.set({'n', 'v'}, '<leader>ca', vim.lsp.buf.code_action, { desc = "Code
 
 -- lualine
 require("lualine").setup()
-
-
--- catgoose/nvim-colorize.nvim
--- require("colorizer").setup()
