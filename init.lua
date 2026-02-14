@@ -12,8 +12,8 @@ vim.opt.clipboard      = "unnamedplus"
 
 -- quick navigation keybinds
 vim.keymap.set('n', '<Space>', '<Nop>')
-vim.keymap.set({'n', 'v'}, '<C-j>', '10j',   { desc = "Go down 10 lines" })
-vim.keymap.set({'n', 'v'}, '<C-k>', '10k',   { desc = "Go up 10 lines"   })
+vim.keymap.set({'n', 'v'}, '<C-j>', '10j',     { desc = "Go down 10 lines" })
+vim.keymap.set({'n', 'v'}, '<C-k>', '10k',     { desc = "Go up 10 lines"   })
 vim.keymap.set({'n', 'v'}, '<A-j>', '10<C-e>', { remap = true, silent = true, desc = "Scroll down 10 lines." })
 vim.keymap.set({'n', 'v'}, '<A-k>', '10<C-y>', { remap = true, silent = true, desc = "Scroll up 10 lines."   })
 
@@ -21,7 +21,6 @@ vim.keymap.set('i', '<C-BS>', '<C-W>', { noremap = true, silent = true })
 
 
 -- quickly removing highlighting
-vim.keymap.set('n', "<Esc>",     "<CMD>noh<CR>")
 vim.keymap.set('n', "<leader>/", "gcc", { remap = true, desc = "Toggle comment"})
 vim.keymap.set('v', "<leader>/", "gc",  { remap = true, desc = "Toggle comment"})
 
@@ -46,23 +45,30 @@ vim.opt.rtp:prepend(lazypath)
 
 -- plugins...
 local plugins = {
-    { "catppuccin/nvim",           name = "catppuccin", priority = 1000 },
-    { "rose-pine/neovim",          name = "rose-pine",  priority = 1000 },
-    { "navarasu/onedark.nvim", priority = 1000 },
+    { "catppuccin/nvim",                  priority = 1000, name = "catppuccin" },
+    { "rose-pine/neovim",                 priority = 1000, name = "rose-pine" },
+    { "navarasu/onedark.nvim",            priority = 1000 },
     { "nyoom-engineering/oxocarbon.nvim", priority = 1000 },
     { "aktersnurra/no-clown-fiesta.nvim", priority = 1000 },
-    { "EdenEast/nightfox.nvim", priority = 1000 },
-    { "ellisonleao/gruvbox.nvim", priority = 1000},
-    { "webhooked/kanso.nvim", lazy = false, priority = 1000, },
-    { "vague-theme/vague.nvim", lazy = false, priority = 1000, },
+    { "EdenEast/nightfox.nvim",           priority = 1000 },
+    { "ellisonleao/gruvbox.nvim",         priority = 1000},
+    { "webhooked/kanso.nvim",             priority = 1000, lazy = false },
+    { "vague-theme/vague.nvim",           priority = 1000, lazy = false },
     {
         'nvim-telescope/telescope.nvim',
         dependencies = {
             'nvim-lua/plenary.nvim',
-                { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
+            { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
         }
     },
-    {'nvim-treesitter/nvim-treesitter', lazy = false, build = ':TSUpdate'},
+    {
+        'nvim-treesitter/nvim-treesitter', lazy = false, build = ':TSUpdate',
+        config = function()
+            require("nvim-treesitter.configs").setup({
+                ensure_installed = { "c", "cpp", "lua" },
+            })
+        end
+    },
     {
         'stevearc/oil.nvim',
         dependencies = { "nvim-tree/nvim-web-devicons" }, lazy = false,
@@ -83,9 +89,8 @@ local plugins = {
     { "akinsho/bufferline.nvim", dependencies = { "nvim-tree/nvim-web-devicons" } },
     { "smjonas/inc-rename.nvim" },
     { "mg979/vim-visual-multi" },
-    { "abecodes/tabout.nvim", lazy = false }
-    -- { "typicode/bg.nvim", lazy = false },
-    -- { "catgoose/nvim-colorizer.lua", event = "BufReadPre" }
+    { "abecodes/tabout.nvim", lazy = false },
+    { "superNGA/AlignEm.nvim" }, -- This is the good one.
 }
 local opt = {}
 require("lazy").setup(plugins, opt)
@@ -119,13 +124,19 @@ require('dashboard').setup({
 })
 
 
+local AlignEm = require("AlignEm")
+AlignEm.setup()
+vim.keymap.set("n", "<Esc>", function() vim.cmd("noh") AlignEm.RemoveAllCursors() end, { desc = "AlignEm: Remove all cursors" })
+vim.keymap.set("n", "<C-0>", AlignEm.AddCursor,                                        { desc = "AlignEm: Add cursor" })
+vim.keymap.set("n", "<C-m>", AlignEm.AlignAllCursors,                                  { desc = "AlignEm: Align all cursors" })
+
 -- Color scheme.
 require("onedark").setup({style = "warmer"})
 vim.cmd.colorscheme("onedark")
 
 
 -- Tabout
-require('tabout').setup()
+require('tabout').setup({})
 
 
 -- bufferline
@@ -153,10 +164,10 @@ vim.keymap.set('n', '<leader>dd', function() require("telescope.builtin").diagno
 
 -- luaSnip
 local ls = require("luasnip")
-local s = ls.snippet
-local t = ls.text_node
-local f = ls.function_node
-local i = ls.insert_node
+local s  = ls.snippet
+local t  = ls.text_node
+local f  = ls.function_node
+local i  = ls.insert_node
 ls.add_snippets("all",{
     s("wall", {
         t({
@@ -168,6 +179,12 @@ ls.add_snippets("all",{
         t({
             ";//////////////////////////////////////////////////////////////////////////",
             ";//////////////////////////////////////////////////////////////////////////",
+        })
+    }),
+    s("walllua", {
+        t({
+            "--/////////////////////////////////////////////////////////////////////////",
+            "--/////////////////////////////////////////////////////////////////////////",
         })
     }),
     s("dochdr", {
@@ -189,7 +206,6 @@ require("luasnip.loaders.from_vscode").lazy_load()
 
 
 -- nvim-treesitter
-require("nvim-treesitter").install({"c", "cpp", "lua"})
 vim.opt.foldenable = false
 
 
@@ -198,7 +214,7 @@ require('nvim-autopairs').setup()
 
 
 -- inc-rename
-require("inc_rename").setup();
+require("inc_rename").setup({});
 vim.keymap.set("n", "<leader>rn", function() return ":IncRename " .. vim.fn.expand("<cword>") end, { expr = true }, { desc = "Rename symbols under cursor" })
 
 
@@ -239,6 +255,25 @@ vim.lsp.config("clangd", {
         "clangd",
         "--header-insertion=never"
     }
+})
+vim.lsp.config("lua_ls", {
+    settings = {
+        Lua = {
+            runtime = {
+                version = "LuaJIT", -- Neovim uses LuaJIT
+            },
+            diagnostics = {
+                globals = { "vim" }, -- Tell it vim is a global
+            },
+            workspace = {
+                library = vim.api.nvim_get_runtime_file("", true),
+                checkThirdParty = false,
+            },
+            telemetry = {
+                enable = false,
+            },
+        },
+    },
 })
 
 
@@ -303,11 +338,11 @@ cmp.setup({
 
 -- Gotta delete H's keybind before setting it to Hover info
 -- vim.keymap.del('n', 'H')
-vim.keymap.set('n', 'H',     vim.lsp.buf.hover,          { desc = "Show Hover Info"     })
-vim.keymap.set('n', 'gd',    vim.lsp.buf.definition,     { desc = "Go To Definition"    })
-vim.keymap.set('n', 'gD',    vim.lsp.buf.declaration,    { desc = "Go To Declaration"   })
-vim.keymap.set('n', '<C-h>', vim.lsp.buf.signature_help, { desc = "Show Signature Help" })
-vim.keymap.set({'n', 'v'}, '<leader>ca', vim.lsp.buf.code_action, { desc = "Code Action" })
+vim.keymap.set('n',        'H',          vim.lsp.buf.hover,          { desc = "Show Hover Info"     })
+vim.keymap.set('n',        'gd',         vim.lsp.buf.definition,     { desc = "Go To Definition"    })
+vim.keymap.set('n',        'gD',         vim.lsp.buf.declaration,    { desc = "Go To Declaration"   })
+vim.keymap.set('n',        '<C-h>',      vim.lsp.buf.signature_help, { desc = "Show Signature Help" })
+vim.keymap.set({'n', 'v'}, '<leader>ca', vim.lsp.buf.code_action,    { desc = "Code Action" })
 
 
 -- lualine
