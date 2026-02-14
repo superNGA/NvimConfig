@@ -91,6 +91,11 @@ local plugins = {
     { "mg979/vim-visual-multi" },
     { "abecodes/tabout.nvim", lazy = false },
     { "superNGA/AlignEm.nvim" }, -- This is the good one.
+    {
+        'MeanderingProgrammer/render-markdown.nvim',
+        dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-mini/mini.nvim' },            -- if you use the mini.nvim suite
+        opts = {},
+    }
 }
 local opt = {}
 require("lazy").setup(plugins, opt)
