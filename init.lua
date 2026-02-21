@@ -51,9 +51,14 @@ local plugins = {
     { "nyoom-engineering/oxocarbon.nvim", priority = 1000 },
     { "aktersnurra/no-clown-fiesta.nvim", priority = 1000 },
     { "EdenEast/nightfox.nvim",           priority = 1000 },
-    { "ellisonleao/gruvbox.nvim",         priority = 1000},
+    { "ellisonleao/gruvbox.nvim",         priority = 1000 },
     { "webhooked/kanso.nvim",             priority = 1000, lazy = false },
     { "vague-theme/vague.nvim",           priority = 1000, lazy = false },
+    { "savq/melange-nvim" },
+    { "sainnhe/sonokai" },
+    { "projekt0n/github-nvim-theme" },
+    { "uhs-robert/oasis.nvim" },
+    { "rebelot/kanagawa.nvim" },
     {
         'nvim-telescope/telescope.nvim',
         dependencies = {
@@ -95,6 +100,39 @@ local plugins = {
         'MeanderingProgrammer/render-markdown.nvim',
         dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-mini/mini.nvim' },            -- if you use the mini.nvim suite
         opts = {},
+    },
+    {
+        "zaldih/themery.nvim",
+        lazy   = false,
+        config = function()
+            require("themery").setup({
+                themes = { -- color schemes :)
+                    "blue",                      "carbonfox",                  "catppuccin",              "catppuccin-frappe",
+                    "catppuccin-latte",          "catppuccin-macchiato",       "catppuccin-mocha",        "darkblue",
+                    "dawnfox",                   "dayfox",                     "default",                 "delek",
+                    "desert",                    "duskfox",                    "elflord",                 "evening",
+                    "github_dark",               "github_dark_colorblind",     "github_dark_default",     "github_dark_dimmed",
+                    "github_dark_high_contrast", "github_dark_tritanopia",     "github_light",            "github_light_colorblind",
+                    "github_light_default",      "github_light_high_contrast", "github_light_tritanopia", "gruvbox",
+                    "habamax",                   "industry",                   "kanagawa",                "kanagawa-dragon",
+                    "kanagawa-lotus",            "kanagawa-wave",              "kanso",                   "kanso-ink",
+                    "kanso-mist",                "kanso-pearl",                "kanso-zen",               "koehler",
+                    "lunaperche",                "melange",                    "miniautumn",              "minicyan",
+                    "minischeme",                "minispring",                 "minisummer",              "miniwinter",
+                    "morning",                   "murphy",                     "nightfox",                "no-clown-fiesta",
+                    "no-clown-fiesta-dark",      "no-clown-fiesta-dim",        "no-clown-fiesta-light",   "nordfox",
+                    "oasis",                     "oasis-abyss",                "oasis-cactus",            "oasis-canyon",
+                    "oasis-desert",              "oasis-dune",                 "oasis-lagoon",            "oasis-midnight",
+                    "oasis-mirage",              "oasis-night",                "oasis-rose",              "oasis-sol",
+                    "oasis-starlight",           "oasis-twilight",             "onedark",                 "oxocarbon",
+                    "pablo",                     "peachpuff",                  "quiet",                   "randomhue",
+                    "retrobox",                  "ron",                        "rose-pine",               "rose-pine-dawn",
+                    "rose-pine-main",            "rose-pine-moon",             "shine",                   "slate",
+                    "sonokai",                   "sorbet",                     "terafox",                 "torte",
+                    "unokai",                    "vague",                      "vim",                     "wildcharm", "zaibatsu", "zellner" },
+                livePreview = true,
+            })
+        end
     }
 }
 local opt = {}
@@ -139,6 +177,9 @@ vim.keymap.set("n", "<C-m>", AlignEm.AlignAllCursors,                           
 require("onedark").setup({style = "warmer"})
 vim.cmd.colorscheme("onedark")
 
+
+-- Themery.nvim 
+vim.keymap.set("n", "<leader>tt", ":Themery<CR>", { desc = "Theme switcher" })
 
 -- Tabout
 require('tabout').setup({})
@@ -254,7 +295,7 @@ vim.lsp.config("*", {
 })
 vim.lsp.config("clangd", {
     -- std::format is fine with C++ 17 on msvc but not anywhere else, so we use c++ 20, but I really don't want to :( I like 17
-    init_options = {fallbackFlags = { '-std=c++20' }},
+    -- init_options = {fallbackFlags = { '-std=c++20' }},
 
     cmd = {
         "clangd",
