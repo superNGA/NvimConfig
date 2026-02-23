@@ -8,6 +8,7 @@ vim.opt.softtabstop    = 4
 vim.opt.number         = true
 vim.opt.relativenumber = false
 vim.opt.clipboard      = "unnamedplus"
+vim.opt.termguicolors  = true
 
 
 -- quick navigation keybinds
@@ -16,6 +17,9 @@ vim.keymap.set({'n', 'v'}, '<C-j>', '10j',     { desc = "Go down 10 lines" })
 vim.keymap.set({'n', 'v'}, '<C-k>', '10k',     { desc = "Go up 10 lines"   })
 vim.keymap.set({'n', 'v'}, '<A-j>', '10<C-e>', { remap = true, silent = true, desc = "Scroll down 10 lines." })
 vim.keymap.set({'n', 'v'}, '<A-k>', '10<C-y>', { remap = true, silent = true, desc = "Scroll up 10 lines."   })
+
+-- jk to go to normal mode.
+vim.keymap.set("i", "jk", "<Esc>", { noremap = true, silent = true })
 
 vim.keymap.set('i', '<C-BS>', '<C-W>', { noremap = true, silent = true })
 
@@ -54,6 +58,7 @@ local plugins = {
     { "ellisonleao/gruvbox.nvim",         priority = 1000 },
     { "webhooked/kanso.nvim",             priority = 1000, lazy = false },
     { "vague-theme/vague.nvim",           priority = 1000, lazy = false },
+    { "folke/tokyonight.nvim",            priority = 1000, lazy = false },
     { "savq/melange-nvim" },
     { "sainnhe/sonokai" },
     { "projekt0n/github-nvim-theme" },
@@ -71,6 +76,9 @@ local plugins = {
         config = function()
             require("nvim-treesitter.configs").setup({
                 ensure_installed = { "c", "cpp", "lua" },
+                highlight = {
+                    enable = true,
+                }
             })
         end
     },
@@ -129,11 +137,13 @@ local plugins = {
                     "retrobox",                  "ron",                        "rose-pine",               "rose-pine-dawn",
                     "rose-pine-main",            "rose-pine-moon",             "shine",                   "slate",
                     "sonokai",                   "sorbet",                     "terafox",                 "torte",
-                    "unokai",                    "vague",                      "vim",                     "wildcharm", "zaibatsu", "zellner" },
+                    "unokai",                    "vague",                      "vim",                     "wildcharm",
+                    "tokyonight",                "tokyonight-day",             "tokyonight-moon",         "tokyonight-night",
+                    "tokyonight-storm",          "zaibatsu",                   "zellner" },
                 livePreview = true,
             })
         end
-    }
+    },
 }
 local opt = {}
 require("lazy").setup(plugins, opt)
@@ -174,8 +184,15 @@ vim.keymap.set("n", "<C-0>", AlignEm.AddCursor,                                 
 vim.keymap.set("n", "<C-m>", AlignEm.AlignAllCursors,                                  { desc = "AlignEm: Align all cursors" })
 
 -- Color scheme.
-require("onedark").setup({style = "warmer"})
-vim.cmd.colorscheme("onedark")
+-- require("onedark").setup({style = "warmer"})
+-- vim.cmd.colorscheme("onedark")
+require("tokyonight").setup({
+    style = "night",
+    styles = {
+        keywords = { italic = true, bold = true },
+    },
+})
+vim.cmd.colorscheme("tokyonight-night")
 
 
 -- Themery.nvim 
@@ -186,7 +203,6 @@ require('tabout').setup({})
 
 
 -- bufferline
-vim.opt.termguicolors = true
 require("bufferline").setup{}
 vim.keymap.set('n', '<Tab>',   "<Cmd>b#<CR>",    { desc = "Go to last buffer" })
 vim.keymap.set('n', '<S-Tab>', "<Cmd>bnext<CR>", { desc = "Go to next buffer" })
