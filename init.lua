@@ -19,7 +19,7 @@ vim.keymap.set({'n', 'v'}, '<A-j>', '10<C-e>', { remap = true, silent = true, de
 vim.keymap.set({'n', 'v'}, '<A-k>', '10<C-y>', { remap = true, silent = true, desc = "Scroll up 10 lines."   })
 
 -- jk to go to normal mode.
-vim.keymap.set("i", "jk", "<Esc>", { noremap = true, silent = true })
+vim.keymap.set("i", "jk", "<Esc>", {})
 
 vim.keymap.set('i', '<C-BS>', '<C-W>', { noremap = true, silent = true })
 
@@ -144,6 +144,7 @@ local plugins = {
             })
         end
     },
+    { "kylechui/nvim-surround" },
 }
 local opt = {}
 require("lazy").setup(plugins, opt)
@@ -250,19 +251,19 @@ ls.add_snippets("all",{
         })
     }),
     s("dochdr", {
-    t("//========================================================================="),
-    t({"", "//                      "}),
-    i(1, "Title"),
-    t({"", "//========================================================================="}),
-    t({"", "// by      : INSANE"}),
-    t({"", "// created : "}),
-    f(function() return os.date("%d/%m/%Y") end), -- Date
-    t({"", "//", "// purpose : "}),
-    i(2, "Purpose"),
-    t({"", "//-------------------------------------------------------------------------"}),
-    t({""}),
-    i(0),
-  }),
+        t("//========================================================================="),
+        t({"", "//                      "}),
+        i(1, "Title"),
+        t({"", "//========================================================================="}),
+        t({"", "// by      : INSANE"}),
+        t({"", "// created : "}),
+        f(function() return os.date("%d/%m/%Y") end), -- Date
+        t({"", "//", "// purpose : "}),
+        i(2, "Purpose"),
+        t({"", "//-------------------------------------------------------------------------"}),
+        t({""}),
+        i(0),
+    }),
 })
 require("luasnip.loaders.from_vscode").lazy_load()
 
