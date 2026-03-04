@@ -196,6 +196,17 @@ require("tokyonight").setup({
 vim.cmd.colorscheme("tokyonight-night")
 
 
+-- nvim-surround
+require("nvim-surround").setup({
+  surrounds = {
+    ["("] = { add = { "(", ")" } },
+    ["["] = { add = { "[", "]" } },
+    ["{"] = { add = { "{", "}" } },
+    ["<"] = { add = { "<", ">" } },
+  },
+})
+
+
 -- Themery.nvim 
 vim.keymap.set("n", "<leader>tt", ":Themery<CR>", { desc = "Theme switcher" })
 
