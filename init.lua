@@ -424,6 +424,7 @@ vim.keymap.set('n',        'gd',         vim.lsp.buf.definition,     { desc = "G
 vim.keymap.set('n',        'gD',         vim.lsp.buf.declaration,    { desc = "Go To Declaration"   })
 vim.keymap.set('n',        '<C-h>',      vim.lsp.buf.signature_help, { desc = "Show Signature Help" })
 vim.keymap.set({'n', 'v'}, '<leader>ca', vim.lsp.buf.code_action,    { desc = "Code Action" })
+vim.keymap.set('n', 'gl', vim.diagnostic.open_float)
 
 
 -- lualine
