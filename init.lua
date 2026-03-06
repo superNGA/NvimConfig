@@ -75,7 +75,7 @@ local plugins = {
         'nvim-treesitter/nvim-treesitter', lazy = false, build = ':TSUpdate',
         config = function()
             require("nvim-treesitter.configs").setup({
-                ensure_installed = { "c", "cpp", "lua" },
+                ensure_installed = { "c", "cpp", "lua", "gdscript", "godot_resource", "gdshader" },
                 highlight = {
                     enable = true,
                 }
@@ -261,6 +261,12 @@ ls.add_snippets("all",{
             "--/////////////////////////////////////////////////////////////////////////",
         })
     }),
+    s("wallgd", {
+        t({
+            "#//////////////////////////////////////////////////////////////////////////",
+            "#//////////////////////////////////////////////////////////////////////////",
+        })
+    }),
     s("dochdr", {
         t("//========================================================================="),
         t({"", "//                      "}),
@@ -349,6 +355,7 @@ vim.lsp.config("lua_ls", {
         },
     },
 })
+vim.lsp.enable("gdscript")
 
 
 -- To make sure the warnings and errors are displayed inline.
