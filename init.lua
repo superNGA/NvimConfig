@@ -75,7 +75,7 @@ local plugins = {
         'nvim-treesitter/nvim-treesitter', lazy = false, build = ':TSUpdate',
         config = function()
             require("nvim-treesitter.configs").setup({
-                ensure_installed = { "c", "cpp", "lua", "gdscript", "godot_resource", "gdshader" },
+                ensure_installed = { "c", "cpp", "lua", "gdscript", "godot_resource", "gdshader", "glsl" },
                 highlight = {
                     enable = true,
                 }
@@ -145,6 +145,12 @@ local plugins = {
         end
     },
     { "kylechui/nvim-surround" },
+    {
+        "QuickGD/quickgd.nvim",
+        ft = "gdshader",
+        cmd = {"GodotRun","GodotRunLast","GodotStart"},
+        config = function() require("quickgd").setup() end
+    }
 }
 local opt = {}
 require("lazy").setup(plugins, opt)
@@ -356,6 +362,7 @@ vim.lsp.config("lua_ls", {
     },
 })
 vim.lsp.enable("gdscript")
+vim.lsp.enable("gdshader")
 
 
 -- To make sure the warnings and errors are displayed inline.
@@ -407,7 +414,8 @@ cmp.setup({
     }),
     sources = cmp.config.sources({
         { name = 'nvim_lsp' },
-        { name = 'luasnip' },
+        { name = 'luasnip'  },
+        { name = 'quickgd'  }
     }, {
         { name = 'buffer' },
     }),
