@@ -71,17 +71,29 @@ local plugins = {
             { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
         }
     },
-    {
-        'nvim-treesitter/nvim-treesitter', lazy = false, build = ':TSUpdate',
-        config = function()
-            require("nvim-treesitter.configs").setup({
-                ensure_installed = { "c", "cpp", "lua", "gdscript", "godot_resource", "gdshader", "glsl" },
-                highlight = {
-                    enable = true,
-                }
-            })
-        end
-    },
+{
+    'nvim-treesitter/nvim-treesitter',
+    lazy = false,
+    build = ':TSUpdate',
+    config = function()
+        local ts = require("nvim-treesitter")
+        ts.setup({
+            highlight = {
+                enable = true,
+                additional_vim_regex_highlighting = false
+            },
+        })
+        ts.install({ "c", "cpp", "lua", "gdscript", "godot_resource", "gdshader", "glsl" })
+
+        vim.api.nvim_create_autocmd("FileType", {
+        pattern  = { "gdscript", "gdshader", "godot_resource" },
+        callback = function(args)
+            pcall(vim.treesitter.start, args.buf)
+        end,
+        })
+
+    end
+},
     {
         'stevearc/oil.nvim',
         dependencies = { "nvim-tree/nvim-web-devicons" }, lazy = false,
