@@ -212,6 +212,8 @@ require("tokyonight").setup({
     },
 })
 vim.cmd.colorscheme("tokyonight-night")
+vim.cmd.colorscheme("carbonfox");
+vim.cmd.colorscheme("quiet");
 
 
 -- nvim-surround
