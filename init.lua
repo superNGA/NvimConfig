@@ -64,6 +64,7 @@ local plugins = {
     { "projekt0n/github-nvim-theme" },
     { "uhs-robert/oasis.nvim" },
     { "rebelot/kanagawa.nvim" },
+    { "slugbyte/lackluster.nvim" },
     {
         'nvim-telescope/telescope.nvim',
         dependencies = {
@@ -79,7 +80,7 @@ local plugins = {
         local ts = require("nvim-treesitter")
         ts.setup({
             highlight = {
-                enable = true,
+                enable = false, -- was true
                 additional_vim_regex_highlighting = false
             },
         })
@@ -116,6 +117,7 @@ local plugins = {
     { "mg979/vim-visual-multi" },
     { "abecodes/tabout.nvim", lazy = false },
     { "superNGA/AlignEm.nvim" }, -- This is the good one.
+    { "superNGA/Correct.nvim" }, -- This is another good one.
     {
         'MeanderingProgrammer/render-markdown.nvim',
         dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-mini/mini.nvim' },            -- if you use the mini.nvim suite
@@ -213,7 +215,8 @@ require("tokyonight").setup({
 })
 vim.cmd.colorscheme("tokyonight-night")
 vim.cmd.colorscheme("carbonfox");
-vim.cmd.colorscheme("quiet");
+vim.cmd.colorscheme("no-clown-fiesta");
+vim.cmd.colorscheme("Correct");
 
 
 -- nvim-surround
@@ -465,3 +468,4 @@ vim.keymap.set('n', 'gl', vim.diagnostic.open_float)
 
 -- lualine
 require("lualine").setup()
+
