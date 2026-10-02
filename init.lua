@@ -1,10 +1,10 @@
 vim.g.mapleader        = " "
 vim.g.maplocalleader   = " "
-vim.opt.expandtab      = true
+vim.opt.expandtab      = false
 vim.opt.shiftround     = true
-vim.opt.shiftwidth     = 4
-vim.opt.tabstop        = 4
-vim.opt.softtabstop    = 4
+vim.opt.shiftwidth     = 8
+vim.opt.tabstop        = 8
+vim.opt.softtabstop    = 8
 vim.opt.number         = true
 vim.opt.relativenumber = false
 vim.opt.clipboard      = "unnamedplus"
@@ -49,10 +49,11 @@ vim.opt.rtp:prepend(lazypath)
 
 -- plugins...
 local plugins = {
+    { "bluz71/vim-moonfly-colors", name = "moonfly", lazy = false, priority = 1000 },
+    { "tiagovla/tokyodark.nvim" },
     { "catppuccin/nvim",                  priority = 1000, name = "catppuccin" },
     { "rose-pine/neovim",                 priority = 1000, name = "rose-pine" },
     { "navarasu/onedark.nvim",            priority = 1000 },
-    { "nyoom-engineering/oxocarbon.nvim", priority = 1000 },
     { "aktersnurra/no-clown-fiesta.nvim", priority = 1000 },
     { "EdenEast/nightfox.nvim",           priority = 1000 },
     { "ellisonleao/gruvbox.nvim",         priority = 1000 },
@@ -159,12 +160,13 @@ local plugins = {
         end
     },
     { "kylechui/nvim-surround" },
-    {
-        "QuickGD/quickgd.nvim",
-        ft = "gdshader",
-        cmd = {"GodotRun","GodotRunLast","GodotStart"},
-        config = function() require("quickgd").setup() end
-    }
+    -- {
+    --     "QuickGD/quickgd.nvim",
+    --     ft = { "gdshader", "gdshaderinc" },
+    --     cmd = {"GodotRun","GodotRunLast","GodotStart"},
+    --     config = function() require("quickgd").setup() end,
+    --     opts = { cmp = false, }
+    -- }
 }
 local opt = {}
 require("lazy").setup(plugins, opt)
@@ -213,10 +215,12 @@ require("tokyonight").setup({
         keywords = { italic = true, bold = true },
     },
 })
-vim.cmd.colorscheme("tokyonight-night")
-vim.cmd.colorscheme("carbonfox");
-vim.cmd.colorscheme("no-clown-fiesta");
-vim.cmd.colorscheme("Correct");
+-- vim.cmd.colorscheme("tokyonight-night")
+-- vim.cmd.colorscheme("carbonfox");
+-- vim.cmd.colorscheme("no-clown-fiesta");
+-- vim.cmd.colorscheme("Correct");
+-- vim.cmd.colorscheme("tokyodark");
+vim.cmd.colorscheme("moonfly");
 
 
 -- nvim-surround
