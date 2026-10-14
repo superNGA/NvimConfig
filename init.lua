@@ -1,3 +1,5 @@
+-- font : Noto Sans Mono. 
+-- font_size : 15
 vim.g.mapleader        = " "
 vim.g.maplocalleader   = " "
 vim.opt.expandtab      = false
