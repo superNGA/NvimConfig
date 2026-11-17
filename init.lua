@@ -11,6 +11,7 @@ vim.opt.relativenumber = false
 vim.opt.clipboard      = "unnamedplus"
 vim.opt.termguicolors  = true
 
+
 -- quick navigation keybinds
 vim.keymap.set('n', '<Space>', '<Nop>')
 vim.keymap.set({'n', 'v'}, '<C-j>', '10j',     { desc = "Go down 10 lines" })
@@ -120,6 +121,23 @@ local plugins = {
 	{ "mg979/vim-visual-multi" },
 	{ "abecodes/tabout.nvim", lazy = false },
 	{ "kylechui/nvim-surround" },
+	{ "kevinhwang91/nvim-hlslens" },
+	{ "j-hui/fidget.nvim" },
+	{ "mcauley-penney/visual-whitespace.nvim",
+	opts = {
+		list_chars = {
+			space = "·",
+			tab = "›",
+			nbsp = "␣",
+			lead = "‹",
+			trail = "›",
+		},
+		fileformat_chars = {
+			unix = "↲",
+			mac = "↲",
+			dos = "↲",
+		}
+	}},
 	{ "superNGA/AlignEm.nvim" }, -- This is the good one.
 	{ "superNGA/Correct.nvim" }, -- This is another good one.
 	{ "MeanderingProgrammer/render-markdown.nvim",
@@ -212,6 +230,12 @@ require("nvim-surround").setup({
     ["<"] = { add = { "<", ">" } },
   },
 })
+
+-- hlslens
+require("hlslens").setup()
+
+-- fidget
+require("fidget").setup()
 
 -- Themery.nvim 
 vim.keymap.set("n", "<leader>tt", ":Themery<CR>", { desc = "Theme switcher" })
