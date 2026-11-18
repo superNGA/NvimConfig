@@ -18,6 +18,8 @@ vim.keymap.set({'n', 'v'}, '<C-j>', '10j',     { desc = "Go down 10 lines" })
 vim.keymap.set({'n', 'v'}, '<C-k>', '10k',     { desc = "Go up 10 lines"   })
 vim.keymap.set({'n', 'v'}, '<A-j>', '10<C-e>', { remap = true, silent = true, desc = "Scroll down 10 lines." })
 vim.keymap.set({'n', 'v'}, '<A-k>', '10<C-y>', { remap = true, silent = true, desc = "Scroll up 10 lines."   })
+vim.keymap.set("n", "<leader>bo", "<cmd>%bd|e#|bd#<cr>", { desc = "Delete all other buffers" })
+
 
 -- code-help keybindings
 vim.keymap.set('n',        'H',          vim.lsp.buf.hover,          { desc = "Show Hover Info"     })
@@ -180,6 +182,15 @@ local plugins = {
 		})
 	end
 	},
+	{
+		'dnlhc/glance.nvim', cmd = 'Glance',
+		keys = {
+			{"<leader>gd", "<CMD>Glance definitions<CR>", desc = "Glance Definitions"},
+			{"<leader>gr", "<CMD>Glance references<CR>", desc = "Glance References"},
+			{"<leader>gy", "<CMD>Glance type_definitions<CR>", desc = "Glance Type Definitions"},
+			{"<leader>gm", "<CMD>Glance implementations<CR>", desc = "Glance Implementations"},
+		}
+	}
 }
 local opt = {}
 require("lazy").setup(plugins, opt)
